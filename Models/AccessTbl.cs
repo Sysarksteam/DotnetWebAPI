@@ -12,16 +12,16 @@ namespace RecpMgmtWebApi.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class RoleTbl
+    public partial class AccessTbl
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public RoleTbl()
+        public AccessTbl()
         {
             this.RoleAccessPermissionTbls = new HashSet<RoleAccessPermissionTbl>();
         }
     
-        public int RoleId { get; set; }
-        public string RoleName { get; set; }
+        public int AccessId { get; set; }
+        public string AccessName { get; set; }
         public Nullable<System.DateTime> DeletedDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

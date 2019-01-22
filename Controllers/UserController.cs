@@ -46,12 +46,30 @@ namespace RecpMgmtWebApi.Controllers
 		}
 		//==========================================================================
 
+		//[HttpGet]
+		//[ActionName("Testcheck")]
+		//public HttpResponseMessage Testcheck()
+		//{
+		//	//UserRoleTbl userRoleTbl = new UserRoleTbl();
+		//	//int id = userDataModel.UserId;
+		//	var entity =  db.UserTbls.ToList();
+		//	return entity; 
+		//	//if(entity != null)
+		//	//{
+		//	//	return Request.CreateResponse(HttpStatusCode.OK);
+		//	//}
+		//	//else 
+		//	//{
+		//	//	return Request.CreateErrorResponse(HttpStatusCode.NotFound, "id not fount " + id.ToString() + " not matched");
+		//	//}
+		//}
+
 		// POST: api/User/AddUserRoleTbl
+
 		[HttpPost]
 		[ActionName("AddUserRoleTbl")]
 		public HttpResponseMessage AddUserRoleTbl( UserDataModel userDataModal)
 		{
-			int val = 0;
 			try
 			{
 				UserTbl userTbl = new UserTbl();
@@ -76,23 +94,6 @@ namespace RecpMgmtWebApi.Controllers
 					db.UserRoleTbls.Add(userRoleTbl);
 					
 				}
-				db.SaveChanges();
-				//while (roleId.Length > 0)
-				//{
-				//	role = roleId.Contains(",") ?
-				//		roleId.Substring(0, roleId.IndexOf(","))
-				//		: roleId;
-				//	val = Convert.ToInt32(role);
-				//	if (!roleId.Contains(","))
-				//		roleId = "";
-				//	else
-				//		roleId = roleId.Substring(roleId.IndexOf(",") + 1);
-				//	UserRoleTbl userRoleTbl = new UserRoleTbl();
-				//	userRoleTbl.UserId = latestUserId;
-				//	userRoleTbl.RoleId = val;
-				//	db.UserRoleTbls.Add(userRoleTbl);
-				//}
-
 				db.SaveChanges();
 				var message = Request.CreateResponse(HttpStatusCode.Created, userTbl);
 				return message;
@@ -180,24 +181,8 @@ namespace RecpMgmtWebApi.Controllers
 					}
 
 					int[] roleId = userDataModel.RoleId;
-					
-					//string role = "";
 					int id1 = id;
-					//while (roleId.Length > 0)
-					//{
-					//	role = roleId.Contains(",") ?
-					//		roleId.Substring(0, roleId.IndexOf(","))
-					//		: roleId;
-					//	val = Convert.ToInt32(role);
-					//	if (!roleId.Contains(","))
-					//		roleId = "";
-					//	else
-					//		roleId = roleId.Substring(roleId.IndexOf(",") + 1);
-					//	UserRoleTbl userRoleTbl = new UserRoleTbl();
-					//	userRoleTbl.UserId = id1;
-					//	userRoleTbl.RoleId = val;
-					//	db.UserRoleTbls.Add(userRoleTbl);
-					//}
+					
 					foreach (int items in roleId)
 					{
 						UserRoleTbl userRoleTbl = new UserRoleTbl();
@@ -215,16 +200,5 @@ namespace RecpMgmtWebApi.Controllers
 				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
 			}
 		}
-		//============================================================================
-		////GET: api/User/GetRoleIdName
-		//[HttpGet]
-		//[ActionName("GetRoleIdName")]
-		//public IHttpActionResult GetRoleIdName()
-		//{
-		//	var result = (from a in db.RoleTbls
-		//				  select new { a.RoleId, a.RoleName }).ToList();
-
-		//	return Ok(result);
-		//}
 	}
 }

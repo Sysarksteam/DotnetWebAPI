@@ -250,9 +250,18 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AccessTbl.cs">
+      <DependentUpon>UserRoleModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\PermissionTbl.cs">
+      <DependentUpon>UserRoleModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RoleAccessPermissionTbl.cs">
+      <DependentUpon>UserRoleModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\RoleTbl.cs">
       <DependentUpon>UserRoleModel.tt</DependentUpon>
     </Compile>
