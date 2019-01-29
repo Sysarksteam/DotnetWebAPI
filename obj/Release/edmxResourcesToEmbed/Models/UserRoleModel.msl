@@ -32,5 +32,41 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="AccessTbls">
+      <EntityTypeMapping TypeName="UserRoleModel.AccessTbl">
+        <MappingFragment StoreEntitySet="AccessTbl">
+          <ScalarProperty Name="DeletedDate" ColumnName="DeletedDate" />
+          <ScalarProperty Name="AccessName" ColumnName="AccessName" />
+          <ScalarProperty Name="AccessId" ColumnName="AccessId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PermissionTbls">
+      <EntityTypeMapping TypeName="UserRoleModel.PermissionTbl">
+        <MappingFragment StoreEntitySet="PermissionTbl">
+          <ScalarProperty Name="DeletedDate" ColumnName="DeletedDate" />
+          <ScalarProperty Name="PermissionName" ColumnName="PermissionName" />
+          <ScalarProperty Name="PermissionId" ColumnName="PermissionId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RoleAccessPermissionTbls">
+      <EntityTypeMapping TypeName="UserRoleModel.RoleAccessPermissionTbl">
+        <MappingFragment StoreEntitySet="RoleAccessPermissionTbl">
+          <ScalarProperty Name="PermissionId" ColumnName="PermissionId" />
+          <ScalarProperty Name="AccessId" ColumnName="AccessId" />
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AccessPermissionTbls">
+      <EntityTypeMapping TypeName="UserRoleModel.AccessPermissionTbl">
+        <MappingFragment StoreEntitySet="AccessPermissionTbl">
+          <ScalarProperty Name="PermissionId" ColumnName="PermissionId" />
+          <ScalarProperty Name="AccessId" ColumnName="AccessId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

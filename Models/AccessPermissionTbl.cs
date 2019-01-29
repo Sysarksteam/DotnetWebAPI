@@ -12,14 +12,14 @@ namespace RecpMgmtWebApi.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class RoleAccessPermissionTbl
+    public partial class AccessPermissionTbl
     {
-        public int RoleId { get; set; }
+        public int UserId { get; set; }
         public int AccessId { get; set; }
         public int PermissionId { get; set; }
     
         public virtual AccessTbl AccessTbl { get; set; }
         public virtual PermissionTbl PermissionTbl { get; set; }
-        public virtual RoleTbl RoleTbl { get; set; }
+        public virtual UserTbl UserTbl { get; set; }
     }
 }

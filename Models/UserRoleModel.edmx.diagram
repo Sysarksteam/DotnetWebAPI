@@ -6,15 +6,19 @@
     <edmx:Diagrams>
       <Diagram DiagramId="90eacb6d1ca34889adb49b56654fb751" Name="Diagram1">
         <EntityTypeShape EntityType="UserRoleModel.RoleTbl" Width="1.5" PointX="0.5" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="UserRoleModel.UserRoleTbl" Width="1.5" PointX="2.875" PointY="3.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="UserRoleModel.UserTbl" Width="1.5" PointX="0.75" PointY="3.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="UserRoleModel.AccessTbl" Width="1.5" PointX="7.375" PointY="0.5" />
-        <EntityTypeShape EntityType="UserRoleModel.PermissionTbl" Width="1.5" PointX="5.25" PointY="0.875" />
-        <EntityTypeShape EntityType="UserRoleModel.RoleAccessPermissionTbl" Width="1.5" PointX="2.875" PointY="0.5" />
+        <EntityTypeShape EntityType="UserRoleModel.UserRoleTbl" Width="1.5" PointX="0.5" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="UserRoleModel.UserTbl" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="UserRoleModel.AccessTbl" Width="1.5" PointX="6.25" PointY="0.625" />
+        <EntityTypeShape EntityType="UserRoleModel.PermissionTbl" Width="1.5" PointX="4.375" PointY="1.125" />
+        <EntityTypeShape EntityType="UserRoleModel.RoleAccessPermissionTbl" Width="1.5" PointX="2.375" PointY="0.5" />
         <AssociationConnector Association="UserRoleModel.FK_RoleAccessPermissionTbl_AccessTbl" />
         <AssociationConnector Association="UserRoleModel.FK_RoleAccessPermissionTbl_PermissionTbl" />
         <AssociationConnector Association="UserRoleModel.FK_RoleAccessPermissionTbl_RoleTbl" />
-      </Diagram>
+        <EntityTypeShape EntityType="UserRoleModel.AccessPermissionTbl" Width="1.5" PointX="5.25" PointY="3.875" />
+        <AssociationConnector Association="UserRoleModel.FK_AccessPermissionTbl_AccessTbl" />
+        <AssociationConnector Association="UserRoleModel.FK_AccessPermissionTbl_PermissionTbl" />
+        <AssociationConnector Association="UserRoleModel.FK_AccessPermissionTbl_UserTbl" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

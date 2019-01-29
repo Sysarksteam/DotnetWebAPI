@@ -31,5 +31,6 @@ namespace RecpMgmtWebApi.Models
         public virtual DbSet<AccessTbl> AccessTbls { get; set; }
         public virtual DbSet<PermissionTbl> PermissionTbls { get; set; }
         public virtual DbSet<RoleAccessPermissionTbl> RoleAccessPermissionTbls { get; set; }
+        public virtual DbSet<AccessPermissionTbl> AccessPermissionTbls { get; set; }
     }
 }

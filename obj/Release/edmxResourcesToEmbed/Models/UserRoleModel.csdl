@@ -7,6 +7,7 @@
     <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="RoleName" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="DeletedDate" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="RoleAccessPermissionTbls" Relationship="UserRoleModel.FK_RoleAccessPermissionTbl_RoleTbl" FromRole="RoleTbl" ToRole="RoleAccessPermissionTbl" />
   </EntityType>
   <EntityType Name="UserRoleTbl">
     <Key>
@@ -28,10 +29,157 @@
     <Property Name="UserEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="UserPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
     <Property Name="DeletedDate" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="AccessPermissionTbls" Relationship="UserRoleModel.FK_AccessPermissionTbl_UserTbl" FromRole="UserTbl" ToRole="AccessPermissionTbl" />
   </EntityType>
   <EntityContainer Name="RcpMgmtConnString" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="RoleTbls" EntityType="Self.RoleTbl" />
     <EntitySet Name="UserRoleTbls" EntityType="Self.UserRoleTbl" />
     <EntitySet Name="UserTbls" EntityType="Self.UserTbl" />
+    <EntitySet Name="AccessTbls" EntityType="UserRoleModel.AccessTbl" />
+    <EntitySet Name="PermissionTbls" EntityType="UserRoleModel.PermissionTbl" />
+    <EntitySet Name="RoleAccessPermissionTbls" EntityType="UserRoleModel.RoleAccessPermissionTbl" />
+    <AssociationSet Name="FK_RoleAccessPermissionTbl_AccessTbl" Association="UserRoleModel.FK_RoleAccessPermissionTbl_AccessTbl">
+      <End Role="AccessTbl" EntitySet="AccessTbls" />
+      <End Role="RoleAccessPermissionTbl" EntitySet="RoleAccessPermissionTbls" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RoleAccessPermissionTbl_PermissionTbl" Association="UserRoleModel.FK_RoleAccessPermissionTbl_PermissionTbl">
+      <End Role="PermissionTbl" EntitySet="PermissionTbls" />
+      <End Role="RoleAccessPermissionTbl" EntitySet="RoleAccessPermissionTbls" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RoleAccessPermissionTbl_RoleTbl" Association="UserRoleModel.FK_RoleAccessPermissionTbl_RoleTbl">
+      <End Role="RoleTbl" EntitySet="RoleTbls" />
+      <End Role="RoleAccessPermissionTbl" EntitySet="RoleAccessPermissionTbls" />
+    </AssociationSet>
+    <EntitySet Name="AccessPermissionTbls" EntityType="UserRoleModel.AccessPermissionTbl" />
+    <AssociationSet Name="FK_AccessPermissionTbl_AccessTbl" Association="UserRoleModel.FK_AccessPermissionTbl_AccessTbl">
+      <End Role="AccessTbl" EntitySet="AccessTbls" />
+      <End Role="AccessPermissionTbl" EntitySet="AccessPermissionTbls" />
+    </AssociationSet>
+    <AssociationSet Name="FK_AccessPermissionTbl_PermissionTbl" Association="UserRoleModel.FK_AccessPermissionTbl_PermissionTbl">
+      <End Role="PermissionTbl" EntitySet="PermissionTbls" />
+      <End Role="AccessPermissionTbl" EntitySet="AccessPermissionTbls" />
+    </AssociationSet>
+    <AssociationSet Name="FK_AccessPermissionTbl_UserTbl" Association="UserRoleModel.FK_AccessPermissionTbl_UserTbl">
+      <End Role="UserTbl" EntitySet="UserTbls" />
+      <End Role="AccessPermissionTbl" EntitySet="AccessPermissionTbls" />
+    </AssociationSet>
   </EntityContainer>
+  <EntityType Name="AccessTbl">
+    <Key>
+      <PropertyRef Name="AccessId" />
+    </Key>
+    <Property Name="AccessId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AccessName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="DeletedDate" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="RoleAccessPermissionTbls" Relationship="UserRoleModel.FK_RoleAccessPermissionTbl_AccessTbl" FromRole="AccessTbl" ToRole="RoleAccessPermissionTbl" />
+    <NavigationProperty Name="AccessPermissionTbls" Relationship="UserRoleModel.FK_AccessPermissionTbl_AccessTbl" FromRole="AccessTbl" ToRole="AccessPermissionTbl" />
+  </EntityType>
+  <EntityType Name="PermissionTbl">
+    <Key>
+      <PropertyRef Name="PermissionId" />
+    </Key>
+    <Property Name="PermissionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PermissionName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="DeletedDate" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="RoleAccessPermissionTbls" Relationship="UserRoleModel.FK_RoleAccessPermissionTbl_PermissionTbl" FromRole="PermissionTbl" ToRole="RoleAccessPermissionTbl" />
+    <NavigationProperty Name="AccessPermissionTbls" Relationship="UserRoleModel.FK_AccessPermissionTbl_PermissionTbl" FromRole="PermissionTbl" ToRole="AccessPermissionTbl" />
+  </EntityType>
+  <EntityType Name="RoleAccessPermissionTbl">
+    <Key>
+      <PropertyRef Name="RoleId" />
+      <PropertyRef Name="AccessId" />
+      <PropertyRef Name="PermissionId" />
+    </Key>
+    <Property Name="RoleId" Type="Int32" Nullable="false" />
+    <Property Name="AccessId" Type="Int32" Nullable="false" />
+    <Property Name="PermissionId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="AccessTbl" Relationship="UserRoleModel.FK_RoleAccessPermissionTbl_AccessTbl" FromRole="RoleAccessPermissionTbl" ToRole="AccessTbl" />
+    <NavigationProperty Name="PermissionTbl" Relationship="UserRoleModel.FK_RoleAccessPermissionTbl_PermissionTbl" FromRole="RoleAccessPermissionTbl" ToRole="PermissionTbl" />
+    <NavigationProperty Name="RoleTbl" Relationship="UserRoleModel.FK_RoleAccessPermissionTbl_RoleTbl" FromRole="RoleAccessPermissionTbl" ToRole="RoleTbl" />
+  </EntityType>
+  <Association Name="FK_RoleAccessPermissionTbl_AccessTbl">
+    <End Type="UserRoleModel.AccessTbl" Role="AccessTbl" Multiplicity="1" />
+    <End Type="UserRoleModel.RoleAccessPermissionTbl" Role="RoleAccessPermissionTbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AccessTbl">
+        <PropertyRef Name="AccessId" />
+      </Principal>
+      <Dependent Role="RoleAccessPermissionTbl">
+        <PropertyRef Name="AccessId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RoleAccessPermissionTbl_PermissionTbl">
+    <End Type="UserRoleModel.PermissionTbl" Role="PermissionTbl" Multiplicity="1" />
+    <End Type="UserRoleModel.RoleAccessPermissionTbl" Role="RoleAccessPermissionTbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PermissionTbl">
+        <PropertyRef Name="PermissionId" />
+      </Principal>
+      <Dependent Role="RoleAccessPermissionTbl">
+        <PropertyRef Name="PermissionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RoleAccessPermissionTbl_RoleTbl">
+    <End Type="UserRoleModel.RoleTbl" Role="RoleTbl" Multiplicity="1" />
+    <End Type="UserRoleModel.RoleAccessPermissionTbl" Role="RoleAccessPermissionTbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RoleTbl">
+        <PropertyRef Name="RoleId" />
+      </Principal>
+      <Dependent Role="RoleAccessPermissionTbl">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="AccessPermissionTbl">
+    <Key>
+      <PropertyRef Name="UserId" />
+      <PropertyRef Name="AccessId" />
+      <PropertyRef Name="PermissionId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="AccessId" Type="Int32" Nullable="false" />
+    <Property Name="PermissionId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="AccessTbl" Relationship="UserRoleModel.FK_AccessPermissionTbl_AccessTbl" FromRole="AccessPermissionTbl" ToRole="AccessTbl" />
+    <NavigationProperty Name="PermissionTbl" Relationship="UserRoleModel.FK_AccessPermissionTbl_PermissionTbl" FromRole="AccessPermissionTbl" ToRole="PermissionTbl" />
+    <NavigationProperty Name="UserTbl" Relationship="UserRoleModel.FK_AccessPermissionTbl_UserTbl" FromRole="AccessPermissionTbl" ToRole="UserTbl" />
+  </EntityType>
+  <Association Name="FK_AccessPermissionTbl_AccessTbl">
+    <End Type="UserRoleModel.AccessTbl" Role="AccessTbl" Multiplicity="1" />
+    <End Type="UserRoleModel.AccessPermissionTbl" Role="AccessPermissionTbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AccessTbl">
+        <PropertyRef Name="AccessId" />
+      </Principal>
+      <Dependent Role="AccessPermissionTbl">
+        <PropertyRef Name="AccessId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_AccessPermissionTbl_PermissionTbl">
+    <End Type="UserRoleModel.PermissionTbl" Role="PermissionTbl" Multiplicity="1" />
+    <End Type="UserRoleModel.AccessPermissionTbl" Role="AccessPermissionTbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PermissionTbl">
+        <PropertyRef Name="PermissionId" />
+      </Principal>
+      <Dependent Role="AccessPermissionTbl">
+        <PropertyRef Name="PermissionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_AccessPermissionTbl_UserTbl">
+    <End Type="UserRoleModel.UserTbl" Role="UserTbl" Multiplicity="1" />
+    <End Type="UserRoleModel.AccessPermissionTbl" Role="AccessPermissionTbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserTbl">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="AccessPermissionTbl">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

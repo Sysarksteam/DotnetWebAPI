@@ -18,6 +18,7 @@ namespace RecpMgmtWebApi.Models
         public PermissionTbl()
         {
             this.RoleAccessPermissionTbls = new HashSet<RoleAccessPermissionTbl>();
+            this.AccessPermissionTbls = new HashSet<AccessPermissionTbl>();
         }
     
         public int PermissionId { get; set; }
@@ -26,5 +27,7 @@ namespace RecpMgmtWebApi.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RoleAccessPermissionTbl> RoleAccessPermissionTbls { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AccessPermissionTbl> AccessPermissionTbls { get; set; }
     }
 }

@@ -14,7 +14,7 @@ namespace RecpMgmtWebApi.Controllers
 {
 	//[EnableCors(origins: "http://mywebclient.azurewebsites.net", headers: "*", methods: "*")]
 	public class UserRoleController : ApiController
-    {
+	{
 		private RcpMgmtConnString db = new RcpMgmtConnString();
 
 		// GET: api/UserRole/GetUsers
@@ -64,8 +64,15 @@ namespace RecpMgmtWebApi.Controllers
 		{
 			var result = (from a in db.UserTbls
 						  where a.UserId == id
-						  select new { a.UserName, a.UserId, a.FirstName, a.LastName,
-							a.UserEmail, a.UserPhone}).ToList();
+						  select new
+						  {
+							  a.UserName,
+							  a.UserId,
+							  a.FirstName,
+							  a.LastName,
+							  a.UserEmail,
+							  a.UserPhone
+						  }).ToList();
 			UserDataModel userDataModel = new UserDataModel();
 			userDataModel.UserId = result.FirstOrDefault().UserId;
 
@@ -76,7 +83,7 @@ namespace RecpMgmtWebApi.Controllers
 			if (result1 != null && result1.Count() > 0)
 			{
 				userDataModel.RoleId = new int[result1.Count()];
-				for( int i=0; i < result1.Count(); i++)
+				for (int i = 0; i < result1.Count(); i++)
 				{
 					userDataModel.RoleId[i] = result1[i].RoleId;
 				}
@@ -154,36 +161,27 @@ namespace RecpMgmtWebApi.Controllers
 			return Ok(userTbl);
 		}
 
-		//protected override void Dispose(bool disposing)
-		//{
-		//	if (disposing)
-		//	{
-		//		db.Dispose();
-		//	}
-		//	base.Dispose(disposing);
-		//}
-
 		private bool UserTblExists(int id)
 		{
 			return db.UserTbls.Count(e => e.UserId == id) > 0;
 		}
-//============================================ROLETBL========================================================
+		//============================================ROLETBL========================================================
 		[HttpGet]
 		[ActionName("GetRole")]
 		public IHttpActionResult GetRole()
 		{
 			var result = (from a in db.RoleTbls
-						  select new {a.RoleId, a.RoleName, a.DeletedDate });
+						  select new { a.RoleId, a.RoleName, a.DeletedDate });
 			return Ok(result);
 		}
-//=================================================================================================
+		//=================================================================================================
 
 		[HttpGet]
 		[ActionName("GetRoleById")]
 		public HttpResponseMessage GetRoleById(int id)
 		{
 			var entity = db.RoleTbls.FirstOrDefault(x => x.RoleId == id);
-			if(entity != null)
+			if (entity != null)
 			{
 				return Request.CreateResponse(HttpStatusCode.OK, entity);
 			}
@@ -193,75 +191,25 @@ namespace RecpMgmtWebApi.Controllers
 					id.ToString() + " not found");
 			}
 		}
-//===============================================================================================
-		// Post: api/UserRole/AddRoleTbl
+		//===============================================================================================
+
+		// Post: api/UserRole/AddAccessPermissionTbl
 		[HttpPost]
-		[ActionName("AddRoleTbl")]
-		public HttpResponseMessage AddRoleTbl(UserDataModel userDataModel)
+		[ActionName("AddAccessPermissionTbl")]
+		public HttpResponseMessage AddAccessPermissionTbl(UserDataModel userDataModel)
 		{
+			int recentUserId = 0;
 			try
 			{
-				RoleTbl roleTbl = new RoleTbl();
-				RoleAccessPermissionTbl roleAccessPermissionTbl = new RoleAccessPermissionTbl();
-				AccessTbl accessTbl = new AccessTbl();
+				AccessPermissionTbl accessPermissionTbl = new AccessPermissionTbl();
+				accessPermissionTbl.UserId = userDataModel.UserId;
+				accessPermissionTbl.AccessId = userDataModel.AccessId;
+				accessPermissionTbl.PermissionId = userDataModel.PermissionId;
 
-				int role = 0;
-				roleTbl.RoleName = userDataModel.RoleName;
-				int[] roleId = userDataModel.RoleId;
-				int[] accessId = userDataModel.AccessId;
-				int[] permissionId = userDataModel.PermissionId;
-
-				foreach(int items4 in roleId)
-				{
-					roleTbl.RoleId = items4;
-					role = items4;
-				}
-				db.RoleTbls.Add(roleTbl);
+				db.AccessPermissionTbls.Add(accessPermissionTbl);
 				db.SaveChanges();
-			//	roleAccessPermissionTbl.RoleId = role;
-
-			//	if (accessId.Count() == permissionId.Count())
-			//	{
-					//	ineligible:
-					//foreach (int items2 in accessId)
-					//{
-					//	roleAccessPermissionTbl.RoleId = role;
-					//	roleAccessPermissionTbl.AccessId = items2;
-					//	db.RoleAccessPermissionTbls.Add(roleAccessPermissionTbl);
-
-					//	foreach (int items3 in permissionId)
-					//	{
-					//		roleAccessPermissionTbl.PermissionId = items3;
-					//		db.RoleAccessPermissionTbls.Add(roleAccessPermissionTbl);
-					//		//	goto ineligible;
-					//		// break;
-					//	}
-					//}
-
-					//for (int i = 0; i < accessId.Count(); i++)
-					//{
-					//	roleAccessPermissionTbl.RoleId = role;
-					//	foreach (int items2 in accessId)
-					//		roleAccessPermissionTbl.AccessId = items2;
-					//		db.RoleAccessPermissionTbls.Add(roleAccessPermissionTbl);
-					//	foreach (int items3 in permissionId)
-					//		roleAccessPermissionTbl.PermissionId = items3;
-					//		db.RoleAccessPermissionTbls.Add(roleAccessPermissionTbl);
-					//}
-					var numbersAndWords = accessId.Zip(permissionId, (n, w) => new { Number = n, Word = w });
-					foreach (var nw in numbersAndWords)
-					{
-						Console.WriteLine(nw.Number + nw.Word);
-						roleAccessPermissionTbl.RoleId = role;
-						roleAccessPermissionTbl.AccessId = nw.Number;
-						roleAccessPermissionTbl.PermissionId = nw.Word;
-						db.RoleAccessPermissionTbls.Add(roleAccessPermissionTbl);
-					}
-				//}
-				db.SaveChanges();
-				
-
-				var message = Request.CreateResponse(HttpStatusCode.Created, roleTbl);
+				recentUserId = accessPermissionTbl.UserId;
+				var message = Request.CreateResponse(HttpStatusCode.Created, accessPermissionTbl);
 				return message;
 			}
 			catch (Exception ex)
@@ -269,7 +217,78 @@ namespace RecpMgmtWebApi.Controllers
 				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
 			}
 		}
-//=======================================================================================
+		//==========================================================================================
+		// Post: api/UserRole/AddRoleTblAndRoleAccessPermissionTbl
+		[HttpPost]
+		[ActionName("AddRoleTblAndRoleAccessPermissionTbl")]
+		public IHttpActionResult AddRoleTblAndAccessPermissionTbl(UserDataModel userDataModel)
+		{
+			try
+			{
+				RoleTbl roleTbl = new RoleTbl();
+				roleTbl.RoleName = userDataModel.RoleName;
+
+				db.RoleTbls.Add(roleTbl);
+				db.SaveChanges();
+				int latestRoleId = roleTbl.RoleId;
+				int userId = userDataModel.UserId;
+				Again:
+				var result1 = (from a in db.RoleAccessPermissionTbls
+							   where a.RoleId.Equals(latestRoleId)
+							   select new
+							   {
+								   a.AccessId,
+								   a.PermissionId,
+								   a.RoleId
+							   }).ToList();
+
+				var result = (from a in db.AccessPermissionTbls
+							  where a.UserId.Equals(userId)
+							  select new
+							  {
+								  a.AccessId,
+								  a.PermissionId,
+								  a.UserId
+							  }).ToList();
+
+				if (result1.Count() > 0)
+				{
+					for (int j = 0; j < result1.Count(); j++)
+					{
+						RoleAccessPermissionTbl roleAccessPermissionTbl1 = new RoleAccessPermissionTbl();
+						roleAccessPermissionTbl1.RoleId = result1.ToList()[j].RoleId;
+						roleAccessPermissionTbl1.AccessId = result1.ToList()[j].AccessId;
+						roleAccessPermissionTbl1.PermissionId = result1.ToList()[j].PermissionId;
+						db.RoleAccessPermissionTbls.Remove(roleAccessPermissionTbl1);
+					}
+					goto Again;
+				}
+				else if(result.Count() > 0)
+				{
+					for (int i = 0; i < result.Count(); i++)
+					{
+						RoleAccessPermissionTbl roleAccessPermissionTbl = new RoleAccessPermissionTbl();
+						
+						roleAccessPermissionTbl.AccessId = result.ToList()[i].AccessId;
+						roleAccessPermissionTbl.PermissionId = result.ToList()[i].PermissionId;
+						roleAccessPermissionTbl.RoleId = latestRoleId;
+						db.RoleAccessPermissionTbls.Add(roleAccessPermissionTbl);
+
+					}
+				}
+				
+				db.SaveChanges();
+
+				//var message = Request.CreateResponse(HttpStatusCode.Created, roleTbl);
+				return Ok();
+			}
+			catch (Exception ex)
+			{
+				return Content(HttpStatusCode.BadRequest, ex);
+			}
+
+		}
+		//=======================================================================================
 
 		[HttpDelete]
 		[ActionName("DeleteRole")]
@@ -290,12 +309,12 @@ namespace RecpMgmtWebApi.Controllers
 					return Request.CreateResponse(HttpStatusCode.OK, entity);
 				}
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
 			}
 		}
-//============================================================================================
+		//============================================================================================
 
 		[HttpPut]
 		[ActionName("UpdateRole")]
@@ -317,42 +336,91 @@ namespace RecpMgmtWebApi.Controllers
 					return Request.CreateResponse(HttpStatusCode.OK, data);
 				}
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
 			}
 		}
-//==================================Permission Tbl==========================================================
-
+		//==================================Permission Tbl==========================================================
+		// GET: api/UserRole/GetPermission
 		[HttpGet]
 		[ActionName("GetPermission")]
 		public IHttpActionResult GetPermission()
 		{
 			var result = (from a in db.PermissionTbls
-						  select new { a.PermissionId, a.PermissionName, a.DeletedDate });
+						  select new { a.PermissionId, a.PermissionName });
 			return Ok(result);
 		}
-//====================================RoleAccessPermission Tbl===============================
-
+		//====================================RoleAccessPermission Tbl===============================
+		//GET: api/UserRole/GetRoleAccessPermission
 		[HttpGet]
 		[ActionName("GetRoleAccessPermission")]
 		public IHttpActionResult GetRoleAccessPermission()
 		{
 			var result = (from a in db.RoleAccessPermissionTbls
-						  select new { a.RoleAccessPermissionId, a.RoleId, a.AccessId,a.PermissionId });
+						  select new { a.RoleId, a.AccessId, a.PermissionId });
 			return Ok(result);
 		}
-//====================================Access Tbl==============================================
-
+		//====================================Access Tbl==============================================
+		// GET: api/UserRole/GetAccessTbl
 		[HttpGet]
 		[ActionName("GetAccessTbl")]
 		public IHttpActionResult GetAccessTbl()
 		{
 			var result = (from a in db.AccessTbls
-						  select new { a.AccessId, a.AccessName, a.DeletedDate});
+						  select new { a.AccessId, a.AccessName });
 			return Ok(result);
 		}
-//=====================================================================================
+		//=====================================================================================
 
+		//POST: api/UserRole/AddAccessPermissionTblToFetchRoleAccessPermissionTbl
+		[HttpPost]
+		[ActionName("AddAccessPermissionTblToFetchRoleAccessPermissionTbl")]
+		public HttpResponseMessage AddAccessPermissionTblToFetchRoleAccessPermissionTbl(int roleId, UserDataModel userDataModel)
+		{
+			var entity = db.RoleAccessPermissionTbls.FirstOrDefault(x => x.RoleId == roleId);
+			if(entity != null)
+			{
+				return Request.CreateResponse(HttpStatusCode.OK, entity);
+			}
+			else
+			{
+				return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Role with roleid" + roleId.ToString() + "noyt found");         
+			}
+			//try
+			//{
+			//	AccessPermissionTbl accessPermissionTbl = new AccessPermissionTbl();
+			//	RoleAccessPermissionTbl roleAccessPermissionTbl = new RoleAccessPermissionTbl();
+			//	int userId = userDataModel.UserId;
+			//	roleAccessPermissionTbl.RoleId = roleId;
+			//	var entity = db.RoleAccessPermissionTbls.FirstOrDefault(r => r.RoleId == roleId);
+			//	for (int i = 0; i < entity.RoleId; ++i)
+
+			//		db.SaveChanges();
+			//	var message = Request.CreateResponse(HttpStatusCode.Created);
+			//	return message;
+			//}
+			//catch (Exception ex)
+			//{
+			//	return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+			//}
+		}
+
+		[HttpGet]
+		[ActionName("GetOneByOne")]
+		public HttpResponseMessage GetOneByOne(int id)
+		{
+			List<AccessPermissionTbl> accessPermissionTbls = new List<AccessPermissionTbl>();
+
+			var entity = db.AccessPermissionTbls.FirstOrDefault(a => a.UserId == id);
+			if (entity != null)
+			{
+				return Request.CreateResponse(HttpStatusCode.OK, accessPermissionTbls);
+			}
+			else
+			{
+				return Request.CreateErrorResponse(HttpStatusCode.NotFound, "not found");
+			}
+		}
 	}
 }

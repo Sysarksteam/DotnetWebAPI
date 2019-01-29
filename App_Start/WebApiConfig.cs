@@ -6,9 +6,23 @@ using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 using System.Web.Http.Cors;
+using System.Net.Http.Formatting;
+using System.Net.Http.Headers;
 
 namespace RecpMgmtWebApi
 {
+	//public class CustomJsonFormatter : JsonMediaTypeFormatter
+	//{
+	//	public CustomJsonFormatter()
+	//	{
+	//		this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
+	//	}
+	//	public override void SetDefaultContentHeaders(Type type, HttpContentHeaders headers, MediaTypeHeaderValue mediaType)
+	//	{
+	//		base.SetDefaultContentHeaders(type, headers, mediaType);
+	//		headers.ContentType = new MediaTypeHeaderValue("application/json");
+	//	}
+	//}
     public static class WebApiConfig
     {
         public static void Register(HttpConfiguration config)
@@ -35,7 +49,20 @@ namespace RecpMgmtWebApi
 				defaults: new { id = RouteParameter.Optional }
 			);
 
+		//	System.Net.Http.Headers.MediaTypeHeaderValue appXmlType = null;
+			//config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new System.Net.Http.Headers.MediaTypeHeaderValue("text/html"));
+			//	config.Formatters.Remove(config.Formatters.XmlFormatter);
+			//	HttpConfiguration config = new HttpConfiguration();
+		//	config.Formatters.XmlFormatter.SupportedMediaTypes.Remove(appXmlType);
+			//config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+		//var json = config.Formatters.JsonFormatter;
+		//json.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects;
 			config.Formatters.Remove(config.Formatters.XmlFormatter);
-		}
+		//	config.Formatters.Add(new CustomJsonFormatter());
+		//	config.Formatters.Remove(config.Formatters.XmlFormatter);
+		//	System.Net.Http.Headers.MediaTypeHeaderValue appXmlType = null;
+		//	config.Formatters.XmlFormatter.SupportedMediaTypes.Remove(appXmlType);
+		//	config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+	}
     }
 }

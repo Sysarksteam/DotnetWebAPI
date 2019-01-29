@@ -17,8 +17,10 @@ namespace RecpMgmtWebApi.Models
 		public Nullable<System.DateTime> DeletedDate { get; set; }
 
 		public int[] RoleId { get; set; }
-		public int[] PermissionId { get; set; }
-		public int[] AccessId { get; set; }
+		public int PermissionId { get; set; }
+		public int AccessId { get; set; }
+
+		public int role { get; set; }
 
 		public string RoleName { get; set; }
 		public string AccessName { get; set; }

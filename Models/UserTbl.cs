@@ -14,6 +14,12 @@ namespace RecpMgmtWebApi.Models
     
     public partial class UserTbl
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public UserTbl()
+        {
+            this.AccessPermissionTbls = new HashSet<AccessPermissionTbl>();
+        }
+    
         public int UserId { get; set; }
         public string UserName { get; set; }
         public string UserPwd { get; set; }
@@ -22,5 +28,8 @@ namespace RecpMgmtWebApi.Models
         public string UserEmail { get; set; }
         public string UserPhone { get; set; }
         public Nullable<System.DateTime> DeletedDate { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AccessPermissionTbl> AccessPermissionTbls { get; set; }
     }
 }

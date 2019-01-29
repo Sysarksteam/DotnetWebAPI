@@ -56,7 +56,15 @@
           <ScalarProperty Name="PermissionId" ColumnName="PermissionId" />
           <ScalarProperty Name="AccessId" ColumnName="AccessId" />
           <ScalarProperty Name="RoleId" ColumnName="RoleId" />
-          <ScalarProperty Name="RoleAccessPermissionId" ColumnName="RoleAccessPermissionId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AccessPermissionTbls">
+      <EntityTypeMapping TypeName="UserRoleModel.AccessPermissionTbl">
+        <MappingFragment StoreEntitySet="AccessPermissionTbl">
+          <ScalarProperty Name="PermissionId" ColumnName="PermissionId" />
+          <ScalarProperty Name="AccessId" ColumnName="AccessId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
