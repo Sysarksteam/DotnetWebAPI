@@ -1,17 +1,51 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Data.Entity;
-//using System.Data.Entity.Infrastructure;
-//using System.Linq;
-//using System.Net;
-//using System.Net.Http;
-//using System.Web.Http;
-//using System.Web.Http.Cors;
-//using System.Web.Http.Description;
-//using RecpMgmtWebApi.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using System.Web.Http.Cors;
+using System.Web.Http.Description;
+using RecpMgmtWebApi.Models;
 
-//namespace RecpMgmtWebApi.Controllers
-//{
+namespace RecpMgmtWebApi.Controllers
+{
+	public class UserRoleController : ApiController
+	{
+		private RcpMgmtConnString db = new RcpMgmtConnString();
+
+		//GET: api/UserRole/Test
+		[HttpPost]
+		[ActionName("Test")]
+		public IHttpActionResult Test(UserDataModel userDataModel)
+		{
+			int id = userDataModel.AccessId;
+
+			var result1 = (from a in db.AccessTbls
+						   where a.AccessId.Equals(id)
+						  select new {  a.AccessName }).ToList();
+
+			var result2 = (from b in db.AccessTbls
+						   select new { b.AccessId, b.AccessName }).ToList();
+
+			//var result3 = (from c in db.PermissionTbls
+			//			   select new { c.PermissionId, c.PermissionName }).ToList();
+
+			return Ok(result1);
+		}
+
+		public class DisplayData
+		{
+
+		}
+
+
+
+	}
+}
+
 //	//[EnableCors(origins: "http://mywebclient.azurewebsites.net", headers: "*", methods: "*")]
 //	public class UserRoleController : ApiController
 //	{
@@ -278,7 +312,7 @@
 //		//				db.AccessPermissionTbls.Remove(accessPermissionTbl1);
 //		//			}
 //		//		}
-				
+
 //		//		db.SaveChanges();
 //		//		return Ok(result);
 //		//	}

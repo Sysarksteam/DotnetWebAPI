@@ -336,7 +336,7 @@ namespace RecpMgmtWebApi.Controllers
 				return Content(HttpStatusCode.BadRequest, "UserId, AccessId and PermissionId this sequence is already exists");
 			}
 		}
-	
+
 //====================================================================================
 		// POST: api/User/DelTempAccessPermissionTbl
 		[HttpPost]
@@ -356,7 +356,7 @@ namespace RecpMgmtWebApi.Controllers
 
 				return Ok(accessPermissionTbl1);
 			}
-			catch(Exception)
+			catch (Exception)
 			{
 				return Content(HttpStatusCode.NotFound, "userId, accessId, permissionId these type of combination is not there...");
 			}
@@ -397,7 +397,7 @@ namespace RecpMgmtWebApi.Controllers
 					latestRoleId = roleTbl.RoleId;
 				}
 				int userId = 0;
-				
+
 				var result4 = (from a in db.UserTbls
 							   where a.UserId.Equals(userDataModel.UserId)
 							   select new
@@ -405,7 +405,7 @@ namespace RecpMgmtWebApi.Controllers
 								   a.UserId,
 								   a.DeletedDate
 							   });
-				if(result4.Count() > 0)
+				if (result4.Count() > 0)
 				{
 					for (int i = 0; i < result4.Count(); i++)
 					{
@@ -419,11 +419,11 @@ namespace RecpMgmtWebApi.Controllers
 						}
 					}
 				}
-				else if(result4.Count() == 0)
+				else if (result4.Count() == 0)
 				{
 					return Content(HttpStatusCode.NotFound, "Userid is not exists");
 				}
-	
+
 				var result = (from a in db.AccessPermissionTbls
 							  where a.UserId.Equals(userId)
 							  select new
@@ -442,9 +442,9 @@ namespace RecpMgmtWebApi.Controllers
 								   a.PermissionId
 							   }).ToList();
 
-				if (result.Count() > 0 )
+				if (result.Count() > 0)
 				{
-					
+
 					if (result1.Count() > 0)
 					{
 						for (int j = 0; j < result1.Count(); j++)
@@ -540,7 +540,6 @@ namespace RecpMgmtWebApi.Controllers
 
 				if (result.Count() > 0)
 				{
-
 					if (result1.Count() > 0)
 					{
 						for (int j = 0; j < result1.Count(); j++)
@@ -581,7 +580,8 @@ namespace RecpMgmtWebApi.Controllers
 				{
 					return Content(HttpStatusCode.NotFound, "RoleId & UserId is not there");
 				}
-				var result10 = (from a in db.AccessPermissionTbls where a.UserId == userId
+				var result10 = (from a in db.AccessPermissionTbls
+								where a.UserId == userId
 								select new { a.AccessId, a.PermissionId }).ToList();
 
 				var result2 = (from b in db.AccessPermissionTbls
@@ -642,7 +642,78 @@ namespace RecpMgmtWebApi.Controllers
 			}
 		}
 
-//===============================================================================
-	
+//===================================================================================
+		// GET: api/User/GetPermissionName/10
+		[HttpGet]
+		[ActionName("GetPermissionName")]
+		public IHttpActionResult GetPermissionName(int id)
+		{
+			int uid = id;
+			var result = (from ut in db.UserTbls
+						  join urt in db.UserRoleTbls on ut.UserId equals urt.UserId
+						  join rapt in db.RoleAccessPermissionTbls on urt.RoleId equals rapt.RoleId
+						  join pt in db.PermissionTbls on rapt.PermissionId equals pt.PermissionId
+						  where ut.UserId.Equals(uid)
+						  select new
+						  {
+							  pt.PermissionName
+						  }).Distinct().ToList();
+			if (result.Count() > 0)
+			{
+				string[] timecollection = new string[result.Count];
+				int i = 0;
+
+				foreach (var item in result)
+				{
+					timecollection[i] = item.PermissionName;
+					i++;
+				}
+				return Ok(timecollection);
+			}
+			else
+			{
+				return Content(HttpStatusCode.BadRequest, "this userid has no permission");
+			}
+		}
+
+//===========================================================================================
+		// GET: api/User/GetAccessName?id=10&aName=Configuration
+		[HttpGet]
+		[ActionName("GetAccessName")]
+		public IHttpActionResult GetAccessName(int id, string aName)
+		{
+			int uid = id;
+			string accessName = aName;
+
+			var result = (from ut in db.UserTbls
+						  join urt in db.UserRoleTbls on ut.UserId equals urt.UserId
+						  join rapt in db.RoleAccessPermissionTbls on urt.RoleId equals rapt.RoleId
+						  join pt in db.PermissionTbls on rapt.PermissionId equals pt.PermissionId
+						  join at in db.AccessTbls on rapt.AccessId equals at.AccessId
+						  where ut.UserId.Equals(uid) && pt.PermissionName.Equals(accessName)
+						  select new
+						  {
+							  at.AccessName
+						  }).Distinct().ToList();
+
+			if (result.Count() > 0)
+			{
+				string[] timecollection = new string[result.Count];
+				int i = 0;
+
+				foreach (var item in result)
+				{
+					timecollection[i] = item.AccessName;
+					i++;
+				}
+				return Ok(timecollection);
+			}
+			else
+			{
+				return Content(HttpStatusCode.BadRequest, "this userid has no AccessName");
+			}
+
+		}
+//===========================================================================================
 	}
 }
