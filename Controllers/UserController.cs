@@ -444,7 +444,6 @@ namespace RecpMgmtWebApi.Controllers
 
 				if (result.Count() > 0)
 				{
-
 					if (result1.Count() > 0)
 					{
 						for (int j = 0; j < result1.Count(); j++)
@@ -460,7 +459,7 @@ namespace RecpMgmtWebApi.Controllers
 									AccessPermissionTbl accessPermissionTbl1 = db.AccessPermissionTbls.Find(userid1, access, permission);
 									db.AccessPermissionTbls.Remove(accessPermissionTbl1);
 									db.SaveChanges();
-									return Ok("RoleId, AccessId and PermissionId these combination is already there " +
+									return Ok("RoleId, AccessId and PermissionId these combination are already there " +
 										"and click save again if you have given morethen one Accessname and Permission name...");
 								}
 							}
@@ -714,6 +713,50 @@ namespace RecpMgmtWebApi.Controllers
 			}
 
 		}
+
 //===========================================================================================
+		// Delete : api/User/DeleteTempAccessPermissionTblBasedOnUserId/5
+		[HttpDelete]
+		[ActionName("DeleteTempAccessPermissionTblBasedOnUserId")]
+		public IHttpActionResult DeleteTempAccessPermissionTblBasedOnUserId(int id)
+		{
+			try
+			{
+				int uid = id;
+				var result = (from a in db.AccessPermissionTbls
+							  where a.UserId.Equals(uid)
+							  select new
+							  {
+								  a.UserId,
+								  a.AccessId,
+								  a.PermissionId
+							  }).ToList();
+
+				if (result.Count() > 0)
+				{
+					for (int i = 0; i < result.Count(); i++)
+					{
+						AccessPermissionTbl accessPermissionTbl = new AccessPermissionTbl();
+						int userid1 = result.ToList()[i].UserId;
+						int access = result.ToList()[i].AccessId;
+						int permission = result.ToList()[i].PermissionId;
+						AccessPermissionTbl accessPermissionTbl1 = db.AccessPermissionTbls.Find(userid1, access, permission);
+						db.AccessPermissionTbls.Remove(accessPermissionTbl1);
+					}
+					db.SaveChanges();
+				}
+				else
+				{
+					return Content(HttpStatusCode.NotFound, "User with id = " + uid.ToString() + " not found");
+				}
+				return Ok("Userid " + uid + " Successfully deleted");
+			}
+			catch(Exception)
+			{
+				return Content(HttpStatusCode.BadRequest, "User should give data in proper format");
+			}
+		}
+
+//=======================================================================================
 	}
 }
