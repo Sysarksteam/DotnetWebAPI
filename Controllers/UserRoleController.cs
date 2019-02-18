@@ -16,31 +16,7 @@ namespace RecpMgmtWebApi.Controllers
 	{
 		private RcpMgmtConnString db = new RcpMgmtConnString();
 
-		//GET: api/UserRole/Test
-		[HttpPost]
-		[ActionName("Test")]
-		public IHttpActionResult Test(UserDataModel userDataModel)
-		{
-			int id = userDataModel.AccessId;
-
-			var result1 = (from a in db.AccessTbls
-						   where a.AccessId.Equals(id)
-						  select new {  a.AccessName }).ToList();
-
-			var result2 = (from b in db.AccessTbls
-						   select new { b.AccessId, b.AccessName }).ToList();
-
-			//var result3 = (from c in db.PermissionTbls
-			//			   select new { c.PermissionId, c.PermissionName }).ToList();
-
-			return Ok(result1);
-		}
-
-		public class DisplayData
-		{
-
-		}
-
+		
 
 
 	}
@@ -456,5 +432,59 @@ namespace RecpMgmtWebApi.Controllers
 //				return Request.CreateErrorResponse(HttpStatusCode.NotFound, "not found");
 //			}
 //		}
+
+
+		////GET: api/UserRole/GetPermissionnName
+		//[HttpGet]
+		//[ActionName("GetPermissionnName")]
+		//public IHttpActionResult GetPermissionnName(int id)
+		//{
+		//	int uid = id;
+		//	var result = (from ut in db.UserTbls
+		//				  join urt in db.UserRoleTbls on ut.UserId equals urt.UserId
+		//				  join rapt in db.RoleAccessPermissionTbls on urt.RoleId equals rapt.RoleId
+		//				  join pt in db.PermissionTbls on rapt.PermissionId equals pt.PermissionId
+		//				  where ut.UserId.Equals(uid)
+		//				  select new
+		//				  {
+		//					  pt.PermissionName
+		//				  }).Distinct().ToList();
+		//	string[] permission = new string[result.Count()];
+		//	if (result.Count() > 0)
+		//	{
+		//		for (int i = 0; i < result.Count(); i++)
+		//		{
+		//			permission[i] = result.ToList()[i].PermissionName;
+		//		}
+		//		return Ok(permission);
+		//	}
+		//	else
+		//		return Content(HttpStatusCode.NotFound, "not found");
+		//}
+
+		////GET: api/UserRole/GetAccessName30
+		//[HttpGet]
+		//[ActionName("GetAccessName30")]
+		//public IHttpActionResult GetAccessname12(int id , string name1)
+		//{
+		//	int uid = id;
+		//	string aname = name1;
+
+		//	var result = (from ut in db.UserTbls
+		//				  join urt in db.UserRoleTbls on ut.UserId equals urt.UserId
+		//				  join rapt in db.RoleAccessPermissionTbls on urt.RoleId equals rapt.RoleId
+		//				  join at in db.AccessTbls on rapt.AccessId equals at.AccessId
+		//				  join pt in db.PermissionTbls on rapt.PermissionId equals pt.PermissionId
+		//				  where ut.UserId.Equals(uid) && pt.PermissionName.Equals(aname)
+		//				  select new
+		//				  {
+		//					  at.AccessName
+		//				  }).Distinct().ToList();
+		//	if (result.Count() > 0)
+		//		return Ok(result);
+		//	else
+		//		return Content(HttpStatusCode.NotFound, "not found");
+		//}
+
 //	}
 //}

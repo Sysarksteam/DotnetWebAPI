@@ -659,15 +659,15 @@ namespace RecpMgmtWebApi.Controllers
 						  }).Distinct().ToList();
 			if (result.Count() > 0)
 			{
-				string[] timecollection = new string[result.Count];
+				string[] pname = new string[result.Count];
 				int i = 0;
 
 				foreach (var item in result)
 				{
-					timecollection[i] = item.PermissionName;
+					pname[i] = item.PermissionName;
 					i++;
 				}
-				return Ok(timecollection);
+				return Ok(pname);
 			}
 			else
 			{
@@ -682,14 +682,14 @@ namespace RecpMgmtWebApi.Controllers
 		public IHttpActionResult GetAccessName(int id, string aName)
 		{
 			int uid = id;
-			string accessName = aName;
+			string permissionName = aName;
 
 			var result = (from ut in db.UserTbls
 						  join urt in db.UserRoleTbls on ut.UserId equals urt.UserId
 						  join rapt in db.RoleAccessPermissionTbls on urt.RoleId equals rapt.RoleId
 						  join pt in db.PermissionTbls on rapt.PermissionId equals pt.PermissionId
 						  join at in db.AccessTbls on rapt.AccessId equals at.AccessId
-						  where ut.UserId.Equals(uid) && pt.PermissionName.Equals(accessName)
+						  where ut.UserId.Equals(uid) && pt.PermissionName.Equals(permissionName)
 						  select new
 						  {
 							  at.AccessName
@@ -697,15 +697,15 @@ namespace RecpMgmtWebApi.Controllers
 
 			if (result.Count() > 0)
 			{
-				string[] timecollection = new string[result.Count];
+				string[] aname = new string[result.Count];
 				int i = 0;
 
 				foreach (var item in result)
 				{
-					timecollection[i] = item.AccessName;
+					aname[i] = item.AccessName;
 					i++;
 				}
-				return Ok(timecollection);
+				return Ok(aname);
 			}
 			else
 			{
@@ -747,6 +747,7 @@ namespace RecpMgmtWebApi.Controllers
 				}
 				else
 				{
+					Console.WriteLine("Error");
 					return Content(HttpStatusCode.NotFound, "User with id = " + uid.ToString() + " not found");
 				}
 				return Ok("Userid " + uid + " Successfully deleted");
